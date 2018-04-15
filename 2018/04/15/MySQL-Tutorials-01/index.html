@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="常见的SQL语法下面总结一下自己平时用的比较多的SQL语法，以及遇到的一些”坑” 为了方便起见，我们有如下结构的表：12345678910CREATE TABLE IF NOT EXISTS input_base (id bigint(20) NOT NULL AUTO_INCREMENT,mid bigint(20) COMMENT &apos;用户 id&apos;,sex varchar(50) COMMENT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL Tutorials 01">
+<meta property="og:url" content="http://yoursite.com/2018/04/15/MySQL-Tutorials-01/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="常见的SQL语法下面总结一下自己平时用的比较多的SQL语法，以及遇到的一些”坑” 为了方便起见，我们有如下结构的表：12345678910CREATE TABLE IF NOT EXISTS input_base (id bigint(20) NOT NULL AUTO_INCREMENT,mid bigint(20) COMMENT &apos;用户 id&apos;,sex varchar(50) COMMENT">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-15T07:17:30.508Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL Tutorials 01">
+<meta name="twitter:description" content="常见的SQL语法下面总结一下自己平时用的比较多的SQL语法，以及遇到的一些”坑” 为了方便起见，我们有如下结构的表：12345678910CREATE TABLE IF NOT EXISTS input_base (id bigint(20) NOT NULL AUTO_INCREMENT,mid bigint(20) COMMENT &apos;用户 id&apos;,sex varchar(50) COMMENT">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'Z7M095JAXO',
+      apiKey: '',
+      indexName: 'sumerzhang',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Post:","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/15/MySQL-Tutorials-01/"/>
+
+
+
+
+
+  <title>MySQL Tutorials 01 | Hexo</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d41892bb7405dbd5d36f6cfa5129e79a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  
+  <!-- Google AdSense start -->
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- sumerzhang_970_250 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:970px;height:250px"
+     data-ad-client="ca-pub-4007735285180797"
+     data-ad-slot="1318264103"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+  <!-- Google AdSense end -->
+  
+  
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/15/MySQL-Tutorials-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sumer Zhang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySQL Tutorials 01</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-15T15:15:31+08:00">
+                2018-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/15/MySQL-Tutorials-01/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/04/15/MySQL-Tutorials-01/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="常见的SQL语法"><a href="#常见的SQL语法" class="headerlink" title="常见的SQL语法"></a>常见的SQL语法</h1><p>下面总结一下自己平时用的比较多的SQL语法，以及遇到的一些”坑”</p>
+<p>为了方便起见，我们有如下结构的表：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> input_base (</span><br><span class="line"><span class="keyword">id</span> <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line"><span class="keyword">mid</span> <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">COMMENT</span> <span class="string">'用户 id'</span>,</span><br><span class="line">sex <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">COMMENT</span> <span class="string">'性别'</span>,</span><br><span class="line">age <span class="built_in">int</span>(<span class="number">10</span>) <span class="keyword">COMMENT</span> <span class="string">'年龄'</span>,</span><br><span class="line">degree <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">COMMENT</span> <span class="string">'学位'</span>,</span><br><span class="line">creat_ymd <span class="built_in">varchar</span>(<span class="number">50</span>),</span><br><span class="line">PRIMARY <span class="keyword">KEY</span> (<span class="keyword">id</span>),</span><br><span class="line"><span class="keyword">INDEX</span> mid_index(<span class="keyword">mid</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
+<p>一般我们说SQL的基本语法就是四个字- <strong>增删改查</strong>。</p>
+<h2 id="1-增"><a href="#1-增" class="headerlink" title="1. 增"></a>1. 增</h2><p>增，就是增加数据，可以分为全表插入，具体列插入和初始化插入。</p>
+<h3 id="1-全表插入"><a href="#1-全表插入" class="headerlink" title="1.全表插入"></a>1.全表插入</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> input_base <span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">input</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-插入具体列"><a href="#2-插入具体列" class="headerlink" title="2. 插入具体列"></a>2. 插入具体列</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> input_base (<span class="keyword">id</span>, <span class="keyword">mid</span>, sex) <span class="keyword">select</span> <span class="keyword">id</span>, <span class="keyword">mid</span>, sex <span class="keyword">from</span> <span class="keyword">input</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-初始化插入"><a href="#3-初始化插入" class="headerlink" title="3. 初始化插入"></a>3. 初始化插入</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 插入全部列可以不写列名</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> input_base <span class="keyword">values</span> (<span class="string">'0'</span>, <span class="string">'80'</span>, <span class="string">'女'</span>, <span class="string">'32'</span>, <span class="string">'本科'</span>, <span class="string">'2017-12-21'</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#插入部分列，其他列为null</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> input_base(<span class="keyword">id</span>, <span class="keyword">mid</span>, sex) <span class="keyword">values</span> (<span class="string">'0'</span>, <span class="string">'122354'</span>, <span class="string">'女'</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="2-删"><a href="#2-删" class="headerlink" title="2. 删"></a>2. 删</h2><p>删，就是删除数据，主要有三种方式:<code>DROP</code>、<code>TRUNCATE</code>和<code>DELETE</code>。</p>
+<h3 id="相同点"><a href="#相同点" class="headerlink" title="相同点:"></a>相同点:</h3><h4 id="1-都可以删除数据"><a href="#1-都可以删除数据" class="headerlink" title="1. 都可以删除数据"></a>1. 都可以删除数据</h4><h4 id="2-DROP、TRUNCATE都是DDL语句，执行后会自动提交"><a href="#2-DROP、TRUNCATE都是DDL语句，执行后会自动提交" class="headerlink" title="2. DROP、TRUNCATE都是DDL语句，执行后会自动提交"></a>2. DROP、TRUNCATE都是DDL语句，执行后会自动提交</h4><h3 id="不同点"><a href="#不同点" class="headerlink" title="不同点:"></a>不同点:</h3><h4 id="1-TRUNCATE和DELETE只删除数据，不删除表结构，而DROP还会删除表结构和索引等依赖"><a href="#1-TRUNCATE和DELETE只删除数据，不删除表结构，而DROP还会删除表结构和索引等依赖" class="headerlink" title="1. TRUNCATE和DELETE只删除数据，不删除表结构，而DROP还会删除表结构和索引等依赖"></a>1. TRUNCATE和DELETE只删除数据，不删除表结构，而DROP还会删除表结构和索引等依赖</h4><h4 id="2-效率：-DROP-gt-TRUNCATE-gt-DELETE"><a href="#2-效率：-DROP-gt-TRUNCATE-gt-DELETE" class="headerlink" title="2. 效率： DROP &gt; TRUNCATE &gt; DELETE"></a>2. 效率： DROP &gt; TRUNCATE &gt; DELETE</h4><h4 id="3-安全性：在没有备份前，小心使用DROP和TRUNCATE。如果涉及事务处理最好用delete-from。"><a href="#3-安全性：在没有备份前，小心使用DROP和TRUNCATE。如果涉及事务处理最好用delete-from。" class="headerlink" title="3. 安全性：在没有备份前，小心使用DROP和TRUNCATE。如果涉及事务处理最好用delete from。"></a>3. 安全性：在没有备份前，小心使用DROP和TRUNCATE。如果涉及事务处理最好用delete from。</h4><h4 id="4-使用场景：-想要删除部分数据，使用delete-from-结构；想要删除表，使用DROP结构-想要保留表结构，删除所有数据，使用TRUNCATE来操作。"><a href="#4-使用场景：-想要删除部分数据，使用delete-from-结构；想要删除表，使用DROP结构-想要保留表结构，删除所有数据，使用TRUNCATE来操作。" class="headerlink" title="4. 使用场景： 想要删除部分数据，使用delete from 结构；想要删除表，使用DROP结构;想要保留表结构，删除所有数据，使用TRUNCATE来操作。"></a>4. 使用场景： 想要删除部分数据，使用delete from 结构；想要删除表，使用DROP结构;想要保留表结构，删除所有数据，使用TRUNCATE来操作。</h4><h3 id="DROP删除表"><a href="#DROP删除表" class="headerlink" title="DROP删除表"></a>DROP删除表</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> input_base;</span><br></pre></td></tr></table></figure>
+<h3 id="DELETE删除部分数据"><a href="#DELETE删除部分数据" class="headerlink" title="DELETE删除部分数据"></a>DELETE删除部分数据</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> input_base <span class="keyword">WHERE</span> sex=<span class="string">'男'</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="DRUNCATE清除数据"><a href="#DRUNCATE清除数据" class="headerlink" title="DRUNCATE清除数据"></a>DRUNCATE清除数据</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> input_base;</span><br></pre></td></tr></table></figure>
+<h2 id="3-改"><a href="#3-改" class="headerlink" title="3.改"></a>3.改</h2><p>改，包括改数据、改数据类型和改表结构。</p>
+<h3 id="1-改数据"><a href="#1-改数据" class="headerlink" title="1. 改数据"></a>1. 改数据</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> input_dabase <span class="keyword">SET</span> <span class="keyword">num</span>=<span class="number">7</span> <span class="keyword">WHERE</span> sex=<span class="string">'男'</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="2-改数据类型"><a href="#2-改数据类型" class="headerlink" title="2.改数据类型"></a>2.改数据类型</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#把degree的数据类型由varchar(50)改为varchar(100)</span><br><span class="line"></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> input_base <span class="keyword">MODIFY</span> <span class="keyword">COLUMN</span> degree <span class="built_in">varchar</span>(<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> input_base <span class="keyword">CHANGE</span> degree degree <span class="built_in">varchar</span>(<span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="3-改表结构"><a href="#3-改表结构" class="headerlink" title="3. 改表结构"></a>3. 改表结构</h3><h4 id="1-新增列"><a href="#1-新增列" class="headerlink" title="1. 新增列"></a>1. 新增列</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#首位</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> input_base <span class="keyword">ADD</span> <span class="keyword">uuid</span> <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">COMMENT</span> <span class="string">'唯一标识'</span> <span class="keyword">first</span>;</span><br><span class="line"></span><br><span class="line">#末尾</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> input_base <span class="keyword">ADD</span> <span class="keyword">num</span> <span class="built_in">int</span>(<span class="number">10</span>) <span class="keyword">COMMENT</span> <span class="string">'文章数量'</span>;</span><br><span class="line"></span><br><span class="line">#制定位置</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> input_base <span class="keyword">ADD</span> amount <span class="built_in">int</span>(<span class="number">20</span>) <span class="keyword">COMMENT</span> <span class="string">'总额'</span> <span class="keyword">AFTER</span> <span class="keyword">mid</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="2-删除列"><a href="#2-删除列" class="headerlink" title="2. 删除列"></a>2. 删除列</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> input_base <span class="keyword">DROP</span> update_ymd;</span><br></pre></td></tr></table></figure>
+<h2 id="4-查"><a href="#4-查" class="headerlink" title="4. 查"></a>4. 查</h2><p>查分为查表结构，查全表，制定列和条件查询。</p>
+<h3 id="1-查表结构"><a href="#1-查表结构" class="headerlink" title="1. 查表结构"></a>1. 查表结构</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DESC input_base</span><br></pre></td></tr></table></figure>
+<h3 id="2-全表查询"><a href="#2-全表查询" class="headerlink" title="2. 全表查询"></a>2. 全表查询</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#取前10条</span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> input_base <span class="keyword">LIMIT</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="3-特定列查询"><a href="#3-特定列查询" class="headerlink" title="3. 特定列查询"></a>3. 特定列查询</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">id</span>, <span class="keyword">mid</span>, sex <span class="keyword">FROM</span> input_base <span class="keyword">LIMIT</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="4-条件查询"><a href="#4-条件查询" class="headerlink" title="4.条件查询"></a>4.条件查询</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">id</span>, <span class="keyword">mid</span>, sex <span class="keyword">FROM</span> input_base <span class="keyword">WHERE</span> sex=<span class="string">'男'</span> <span class="keyword">LIMIT</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="5-编码"><a href="#5-编码" class="headerlink" title="5.编码"></a>5.编码</h2><p>中文乱码问题</p>
+<h3 id="1-创建数据库代码"><a href="#1-创建数据库代码" class="headerlink" title="1. 创建数据库代码"></a>1. 创建数据库代码</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> <span class="string">`test`</span></span><br><span class="line"><span class="keyword">CHARSET</span> <span class="keyword">set</span> <span class="string">`utf8`</span></span><br><span class="line"><span class="keyword">COLLATE</span> <span class="string">`utf8_general_ci`</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="2-创建表结构代码"><a href="#2-创建表结构代码" class="headerlink" title="2.创建表结构代码"></a>2.创建表结构代码</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`input_user_DATABASE`</span> (</span><br><span class="line"><span class="string">`id`</span> <span class="built_in">bigint</span>(<span class="number">30</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT <span class="keyword">COMMENT</span> <span class="string">`自增id`</span>,</span><br><span class="line"><span class="string">`mid`</span> <span class="built_in">bigint</span>(<span class="number">30</span>)  <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">`用户id`</span>,</span><br><span class="line"><span class="string">`age`</span> <span class="built_in">int</span>(<span class="number">10</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">`年龄`</span>,</span><br><span class="line"><span class="string">`degree`</span> <span class="built_in">varchar</span>(<span class="number">50</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span> <span class="string">`学位`</span>,</span><br><span class="line">PRIMARY <span class="keyword">KEY</span> （<span class="string">`id`</span>),</span><br><span class="line"><span class="keyword">INDEX</span> <span class="string">`age`</span>,</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">101</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8</span><br></pre></td></tr></table></figure>
+<p>这样设置好后就不会乱码了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/15/学习Python最好的方式/" rel="next" title="1">
+                <i class="fa fa-chevron-left"></i> 1
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/15/Qunar-Selenium自动化Python爬虫/" rel="prev" title="Qunar_Selenium自动化Python爬虫">
+                Qunar_Selenium自动化Python爬虫 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Sumer Zhang</p>
+              <p class="site-description motion-element" itemprop="description">我们一定会比前一秒变得更强！</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#常见的SQL语法"><span class="nav-number">1.</span> <span class="nav-text">常见的SQL语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-增"><span class="nav-number">1.1.</span> <span class="nav-text">1. 增</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-全表插入"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.全表插入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-插入具体列"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. 插入具体列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-初始化插入"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. 初始化插入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-删"><span class="nav-number">1.2.</span> <span class="nav-text">2. 删</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相同点"><span class="nav-number">1.2.1.</span> <span class="nav-text">相同点:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-都可以删除数据"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">1. 都可以删除数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-DROP、TRUNCATE都是DDL语句，执行后会自动提交"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">2. DROP、TRUNCATE都是DDL语句，执行后会自动提交</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不同点"><span class="nav-number">1.2.2.</span> <span class="nav-text">不同点:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-TRUNCATE和DELETE只删除数据，不删除表结构，而DROP还会删除表结构和索引等依赖"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">1. TRUNCATE和DELETE只删除数据，不删除表结构，而DROP还会删除表结构和索引等依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-效率：-DROP-gt-TRUNCATE-gt-DELETE"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">2. 效率： DROP &gt; TRUNCATE &gt; DELETE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-安全性：在没有备份前，小心使用DROP和TRUNCATE。如果涉及事务处理最好用delete-from。"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">3. 安全性：在没有备份前，小心使用DROP和TRUNCATE。如果涉及事务处理最好用delete from。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-使用场景：-想要删除部分数据，使用delete-from-结构；想要删除表，使用DROP结构-想要保留表结构，删除所有数据，使用TRUNCATE来操作。"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">4. 使用场景： 想要删除部分数据，使用delete from 结构；想要删除表，使用DROP结构;想要保留表结构，删除所有数据，使用TRUNCATE来操作。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DROP删除表"><span class="nav-number">1.2.3.</span> <span class="nav-text">DROP删除表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DELETE删除部分数据"><span class="nav-number">1.2.4.</span> <span class="nav-text">DELETE删除部分数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DRUNCATE清除数据"><span class="nav-number">1.2.5.</span> <span class="nav-text">DRUNCATE清除数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-改"><span class="nav-number">1.3.</span> <span class="nav-text">3.改</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-改数据"><span class="nav-number">1.3.1.</span> <span class="nav-text">1. 改数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-改数据类型"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.改数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-改表结构"><span class="nav-number">1.3.3.</span> <span class="nav-text">3. 改表结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-新增列"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">1. 新增列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-删除列"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">2. 删除列</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-查"><span class="nav-number">1.4.</span> <span class="nav-text">4. 查</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-查表结构"><span class="nav-number">1.4.1.</span> <span class="nav-text">1. 查表结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-全表查询"><span class="nav-number">1.4.2.</span> <span class="nav-text">2. 全表查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-特定列查询"><span class="nav-number">1.4.3.</span> <span class="nav-text">3. 特定列查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-条件查询"><span class="nav-number">1.4.4.</span> <span class="nav-text">4.条件查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-编码"><span class="nav-number">1.5.</span> <span class="nav-text">5.编码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-创建数据库代码"><span class="nav-number">1.5.1.</span> <span class="nav-text">1. 创建数据库代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-创建表结构代码"><span class="nav-number">1.5.2.</span> <span class="nav-text">2.创建表结构代码</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sumer Zhang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'PwxF2Esxsrzx2WXxkdBr5zWg-gzGzoHsz',
+        appKey: 'kp0keV4618RuOEvPnxnB56Gu',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
