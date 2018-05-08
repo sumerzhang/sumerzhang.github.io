@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="scala," />
 
 
 
@@ -79,17 +79,18 @@
 
 
 
-<meta name="description" content="我们一定会比前一秒变得更强！">
-<meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+<meta name="description" content="问题：创建多行字符串解决办法：使用三个双引号创建多行字符串123val foo = &quot;&quot;&quot;On Sunday,I want to go to zoo andwatch monkeys. 但是有一个问题在REPL中，结果为这样123On Sunday, 	I want to go to zoo and	watch monkeys. 解决这一问题的办法很多，比如  第一行左对齐 多行字符串的末尾添加s">
+<meta name="keywords" content="scala">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scala Cookbook1.2创建多个字符串">
+<meta property="og:url" content="http://yoursite.com/2018/04/17/Scala-Cookbook1-2创建多个字符串/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="我们一定会比前一秒变得更强！">
+<meta property="og:description" content="问题：创建多行字符串解决办法：使用三个双引号创建多行字符串123val foo = &quot;&quot;&quot;On Sunday,I want to go to zoo andwatch monkeys. 但是有一个问题在REPL中，结果为这样123On Sunday, 	I want to go to zoo and	watch monkeys. 解决这一问题的办法很多，比如  第一行左对齐 多行字符串的末尾添加s">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-15T09:10:04.908Z">
+<meta property="og:updated_time" content="2018-04-17T03:51:29.910Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="categories">
-<meta name="twitter:description" content="我们一定会比前一秒变得更强！">
+<meta name="twitter:title" content="Scala Cookbook1.2创建多个字符串">
+<meta name="twitter:description" content="问题：创建多行字符串解决办法：使用三个双引号创建多行字符串123val foo = &quot;&quot;&quot;On Sunday,I want to go to zoo andwatch monkeys. 但是有一个问题在REPL中，结果为这样123On Sunday, 	I want to go to zoo and	watch monkeys. 解决这一问题的办法很多，比如  第一行左对齐 多行字符串的末尾添加s">
 
 
 
@@ -119,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/04/17/Scala-Cookbook1-2创建多个字符串/"/>
 
 
 
 
 
-  <title>categories | Hexo</title>
+  <title>Scala Cookbook1.2创建多个字符串 | Hexo</title>
   
 
 
@@ -332,40 +333,173 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/17/Scala-Cookbook1-2创建多个字符串/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sumer Zhang">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">categories</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="category-all-page">
-            <div class="category-all-title">
-                暂无分类
-            </div>
-            <div class="category-all">
+          <h1 class="post-title" itemprop="name headline">Scala Cookbook1.2创建多个字符串</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
               
-            </div>
-          </div>
-        
-      </div>
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-17T11:40:39+08:00">
+                2018-04-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/17/Scala-Cookbook1-2创建多个字符串/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/04/17/Scala-Cookbook1-2创建多个字符串/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h2 id="问题：创建多行字符串"><a href="#问题：创建多行字符串" class="headerlink" title="问题：创建多行字符串"></a>问题：创建多行字符串</h2><h2 id="解决办法：使用三个双引号创建多行字符串"><a href="#解决办法：使用三个双引号创建多行字符串" class="headerlink" title="解决办法：使用三个双引号创建多行字符串"></a>解决办法：使用三个双引号创建多行字符串</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> foo = <span class="string">""</span><span class="string">"On Sunday,</span></span><br><span class="line"><span class="string">I want to go to zoo and</span></span><br><span class="line"><span class="string">watch monkeys.</span></span><br></pre></td></tr></table></figure>
+<p>但是有一个问题在<code>REPL</code>中，结果为这样<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">On Sunday, </span><br><span class="line">	I want to go to zoo and</span><br><span class="line">	watch monkeys.</span><br></pre></td></tr></table></figure></p>
+<p>解决这一问题的办法很多，比如</p>
+<ol>
+<li>第一行左对齐</li>
+<li>多行字符串的末尾添加stripMargin方法，并且在第一行后所有行以管道符(|)开头。<br>如<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> speech = <span class="string">""</span><span class="string">"On Sunday</span></span><br><span class="line"><span class="string">		|I want to go to zoo and</span></span><br><span class="line"><span class="string">		|watch monkeys."</span><span class="string">""</span>.stripMargin</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
       
     </div>
     
     
     
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/uploads/wechat-qcode.jpg" alt="Sumer Zhang wechat" style="width: 200px; max-width: 100%;"/>
+    <div>欢迎您扫一扫上面的微信公众号，订阅我的博客。</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/scala/" rel="tag"># scala</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/17/Scala-Cookbook1-1-比较字符串的相等性/" rel="next" title="Scala Cookbook1.1 比较字符串的相等性">
+                <i class="fa fa-chevron-left"></i> Scala Cookbook1.1 比较字符串的相等性
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/22/善用Assert-你应该知道的Python技巧/" rel="prev" title="善用Assert-你应该知道的Python技巧">
+                善用Assert-你应该知道的Python技巧 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -375,6 +509,13 @@
 
           
 	  
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
 
         </div>
         
@@ -395,8 +536,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -447,6 +597,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题：创建多行字符串"><span class="nav-number">1.</span> <span class="nav-text">问题：创建多行字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决办法：使用三个双引号创建多行字符串"><span class="nav-number">2.</span> <span class="nav-text">解决办法：使用三个双引号创建多行字符串</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
